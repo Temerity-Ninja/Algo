@@ -155,7 +155,7 @@ def execute_strategy():
     threading.Thread(target=poll_nifty_price, args=(fyers,), daemon=True).start()
     # Calculate entry day: first valid trading day after last expiry
     expiry_day = get_next_expiry_date()
-    entry_day = expiry_day - datetime.timedelta(days=5)
+    entry_day = expiry_day - datetime.timedelta(days=3)
     if not is_market_open(entry_day) or entry_day.strftime("%Y-%m-%d") in holidays:
         entry_day += datetime.timedelta(days=1)
 
