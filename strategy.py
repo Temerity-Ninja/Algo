@@ -69,8 +69,7 @@ def handle_recovery_leg(fyers, original_leg):
             print(f"Recovery leg {original_leg}.1 skipped due to time cutoff.")
             log_trade(f"{original_leg}.1_SKIPPED", new_symbol, "8-point drop condition not met in time")
             # Prevent script exit — stay alive if monitoring existing positions
-         True:
-            time.sleep(60)
+           time.sleep(60)
         time.sleep(2)
         time.sleep(2)
 
