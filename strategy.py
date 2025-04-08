@@ -89,7 +89,7 @@ def handle_recovery_leg(fyers, original_leg):
 
 def monitor_positions(fyers):
     global PNL_LOCK
-     while True:
+    while True:
         for leg, data in list(POSITIONS.items()):
             try:
                 response = fyers.quotes({"symbols": data['symbol']})
