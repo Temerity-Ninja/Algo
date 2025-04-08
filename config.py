@@ -2,7 +2,7 @@
 
 CONFIG = {
     # Strategy Timings
-    "ENTRY_TIME": "11:00:00",
+    "ENTRY_TIME": "12:00:00",
     "SQUARE_OFF_TIME": "15:00:00",
 
     # MTM Profit Lock Settings
