@@ -129,7 +129,7 @@ def monitor_positions(fyers):
 
 # Main Strategy Execution
 def heartbeat():
-     True:
+    while True:
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] 🫀 Bot alive and monitoring...")
         time.sleep(3600)  # log every hour
 
