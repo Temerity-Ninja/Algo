@@ -29,7 +29,7 @@ def poll_nifty_price(fyers):
                 print(f"NIFTY LTP: {NIFTY_LTP} (fetched in {(time.time()-start)*1000:.2f} ms)")
         except Exception as e:
             print(f"Error fetching Nifty LTP: {e}")
-        time.sleep(1)
+        time.sleep(10)
 
 # Wait for specified time
 def wait_until(target_time):
