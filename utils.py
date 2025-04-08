@@ -177,3 +177,8 @@ def get_expiry_symbol_code(expiry_date):
         7: "7", 8: "8", 9: "9", 10: "O", 11: "N", 12: "D"
     }
     return f"{expiry_date.strftime('%y')}{month_map[expiry_date.month]}{expiry_date.day:02d}"
+def log_action(message):
+    timestamp = datetime.datetime.now()
+    log_line = f"{timestamp} - ACTION - {message}\n"
+    with open(CONFIG["TRADE_LOG_FILE"], "a") as file:
+        file.write(log_line)
