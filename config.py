@@ -45,7 +45,7 @@ CONFIG = {
     "ENABLE_MANUAL_OVERRIDE": True,
 
     # Strategy Parameters
-    "ATM_OFFSET_PERCENT_INITIAL": 2.5,
+    "ATM_OFFSET_PERCENT_INITIAL": 5.0,
     "ATM_OFFSET_PERCENT_RECOVERY": 2.75,
 
     "SL_INITIAL_PERCENT": 40,  # initial SL at +40% premium above entry
