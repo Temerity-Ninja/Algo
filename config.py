@@ -83,3 +83,5 @@ CONFIG = {
 
 # URLs
 HOLIDAYS_URL = "https://www.nseindia.com/api/holiday-master?type=trading"
+
+"TRADE_LOG_FILE": "/mnt/data/trade_log.txt",  # Adjusted for Colab
