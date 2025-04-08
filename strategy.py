@@ -33,7 +33,7 @@ def poll_nifty_price(fyers):
 
 # Wait for specified time
 def wait_until(target_time):
-     datetime.datetime.now().time() < datetime.datetime.strptime(target_time, "%H:%M:%S").time():
+     while datetime.datetime.now().time() < datetime.datetime.strptime(target_time, "%H:%M:%S").time():
         time.sleep(0.5)
 
 # Retry partial fill orders
