@@ -84,4 +84,4 @@ CONFIG = {
 }
 
     # URLs
-"HOLIDAYS_URL" : "https://www.nseindia.com/api/holiday-master?type=trading"
+HOLIDAYS_URL : "https://www.nseindia.com/api/holiday-master?type=trading"
