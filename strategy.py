@@ -230,5 +230,5 @@ def execute_strategy():
 if __name__ == "__main__":
     execute_strategy()
     # Keep script alive after execution
-while True:
+    while True:
         time.sleep(5)
