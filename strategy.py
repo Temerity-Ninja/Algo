@@ -147,7 +147,7 @@ def execute_strategy():
     # Calculate entry day: first valid trading day after last expiry
     expiry_day = get_next_expiry_date()
     entry_day = expiry_day - datetime.timedelta(days=7)
-     not is_market_open(entry_day) or entry_day.strftime("%Y-%m-%d") in holidays:
+    not is_market_open(entry_day) or entry_day.strftime("%Y-%m-%d") in holidays:
         entry_day += datetime.timedelta(days=1)
 
     if today != entry_day:
