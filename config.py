@@ -13,7 +13,7 @@ CONFIG = {
     "QTY": 75,
 
     # API and Environment
-    "MODE": "TEST",  # or "LIVE"
+    "MODE": "LIVE",  # or "LIVE"
 
     # Retry Settings
     "RETRY_LIMIT": 5,
