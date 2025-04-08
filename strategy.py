@@ -60,7 +60,7 @@ def handle_recovery_leg(fyers, original_leg):
 
     trigger_price = get_nifty_spot_price(fyers)
     print(f"Monitoring {original_leg}.1 for 8-point drop from {trigger_price}...")
-     True:
+    while True:
         current_price = get_nifty_spot_price(fyers)
         if current_price <= trigger_price - CONFIG["RECOVERY_TRADE_WAIT_POINTS"]:
             print(f"8-point drop condition met for {original_leg}.1 at price {current_price}.")
