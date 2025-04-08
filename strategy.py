@@ -16,6 +16,7 @@ NIFTY_LTP = None
 PRINT_LTP = True
 POSITIONS = {}
 PNL_LOCK = 0
+BOOKED_PNL = 0
 RECOVERY_PENDING = {}
 
 # Fetch Nifty price continuously every second
@@ -68,7 +69,6 @@ def handle_recovery_leg(fyers, original_leg):
         elif datetime.datetime.now().time() >= datetime.datetime.strptime(CONFIG["SQUARE_OFF_TIME"], "%H:%M:%S").time():
             print(f"Recovery leg {original_leg}.1 skipped due to time cutoff.")
             log_trade(f"{original_leg}.1_SKIPPED", new_symbol, "8-point drop condition not met in time")
-            # Prevent script exit — stay alive if monitoring existing positions
         time.sleep(60)
         time.sleep(2)
         time.sleep(2)
@@ -105,17 +105,27 @@ def monitor_positions(fyers):
                 if ltp >= sl_trigger:
                     print(f"SL hit for {leg}: LTP {ltp} >= SL {sl_trigger}")
                     log_trade(f"{leg}_SL", data['symbol'], f"Exited at {ltp}")
+                    pnl = (data['entry_price'] - ltp) * CONFIG['QTY']
+                    global BOOKED_PNL
+                    BOOKED_PNL += pnl
                     POSITIONS.pop(leg)
                     if leg in ["L1", "L2"]:
                         threading.Thread(target=handle_recovery_leg, args=(fyers, leg), daemon=True).start()
                 elif ltp <= target_trigger:
                     print(f"Target hit for {leg}: LTP {ltp} <= Target {target_trigger}")
                     log_trade(f"{leg}_TARGET", data['symbol'], f"Exited at {ltp}")
+                    pnl = (data['entry_price'] - ltp) * CONFIG['QTY']
+                    global BOOKED_PNL
+                    BOOKED_PNL += pnl
                     POSITIONS.pop(leg)
             except Exception as e:
                 print(f"Error in monitor_positions: {e}")
 
-        mtm = sum([data['entry_price'] - get_nifty_spot_price(fyers) for data in POSITIONS.values()]) * CONFIG['QTY']
+        unrealized = sum([
+            (data['entry_price'] - fyers.quotes({"symbols": data['symbol']})["d"][0]["v"]["lp"])
+            for data in POSITIONS.values()
+        ]) * CONFIG['QTY']
+        mtm = BOOKED_PNL + unrealized
         if mtm >= CONFIG['MTM_LOCK_BASE']:
             steps = int((mtm - CONFIG['MTM_LOCK_BASE']) // CONFIG['MTM_LOCK_INCREMENT'])
             PNL_LOCK = steps * CONFIG['MTM_LOCK_INCREMENT']
@@ -130,7 +140,7 @@ def monitor_positions(fyers):
 # Main Strategy Execution
 def heartbeat():
     while True:
-        print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] 🫀 Bot alive and monitoring...")
+        print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] 🪀 Bot alive and monitoring...")
         time.sleep(3600)  # log every hour
 
 def execute_strategy():
@@ -147,7 +157,7 @@ def execute_strategy():
     # Calculate entry day: first valid trading day after last expiry
     expiry_day = get_next_expiry_date()
     entry_day = expiry_day - datetime.timedelta(days=7)
-    not is_market_open(entry_day) or entry_day.strftime("%Y-%m-%d") in holidays:
+    if not is_market_open(entry_day) or entry_day.strftime("%Y-%m-%d") in holidays:
         entry_day += datetime.timedelta(days=1)
 
     if today != entry_day:
@@ -164,10 +174,9 @@ def execute_strategy():
             print(f"Could not fetch account PnL: {e}")
         print("Monitoring existing trades (manual or prior) for SL/Target/MTM/Exit.")
         threading.Thread(target=monitor_positions, args=(fyers,), daemon=True).start()
-        # Check if today is the expiry day (Thursday)
     if datetime.datetime.now().date() == get_next_expiry_date():
         while datetime.datetime.now().time() < datetime.datetime.strptime(CONFIG["SQUARE_OFF_TIME"], "%H:%M:%S").time():
-        time.sleep(1)
+            time.sleep(1)
 
         if datetime.date.today() == get_next_expiry_date():
             square_off_all_positions(fyers)
@@ -192,7 +201,7 @@ def execute_strategy():
     put_strike = round_to_nearest_50(atm * (1 - CONFIG["ATM_OFFSET_PERCENT_INITIAL"] / 100))
 
     expiry_date = get_next_expiry_date()
-    while expiry_date.strftime("%Y-%m-%d") in fetch_market_holidays():
+    while expiry_date.strftime("%Y-%m-%d") in holidays:
         expiry_date -= datetime.timedelta(days=1)
     expiry_str = get_expiry_symbol_code(expiry_date)
     call_symbol = f"NSE:NIFTY{expiry_str}{call_strike}CE"
@@ -217,11 +226,10 @@ def execute_strategy():
 
     if datetime.date.today() == get_next_expiry_date():
         square_off_all_positions(fyers)
-    if datetime.date.today() == get_next_expiry_date():
         log_trade("SquareOff", "All", "Positions squared off at expiry")
 
 if __name__ == "__main__":
     execute_strategy()
     # Keep script alive after execution
-    while True:
+while True:
         time.sleep(5)
