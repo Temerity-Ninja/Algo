@@ -78,12 +78,12 @@ CONFIG = {
 
     # Strategy Start and Expiry
     "STRATEGY_START_DAY": "TUESDAY",  # Day after previous Thursday expiry
-    "STRATEGY_EXPIRY_DAY": "THURSDAY"  # Expiry day (weekly)
+    "STRATEGY_EXPIRY_DAY": "THURSDAY",  # Expiry day (weekly)
 
     # URLs
-HOLIDAYS_URL = "https://www.nseindia.com/api/holiday-master?type=trading"
+HOLIDAYS_URL = "https://www.nseindia.com/api/holiday-master?type=trading",
 
-"TRADE_LOG_FILE": "/mnt/data/trade_log.txt",  # Adjusted for Colab
+"TRADE_LOG_FILE": "/mnt/data/trade_log.txt"  # Adjusted for Colab
 }
 
 
