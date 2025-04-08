@@ -33,7 +33,7 @@ def poll_nifty_price(fyers):
 
 # Wait for specified time
 def wait_until(target_time):
-    while datetime.datetime.now().time() < datetime.datetime.strptime(target_time, "%H:%M:%S").time():
+     datetime.datetime.now().time() < datetime.datetime.strptime(target_time, "%H:%M:%S").time():
         time.sleep(0.5)
 
 # Retry partial fill orders
@@ -60,7 +60,7 @@ def handle_recovery_leg(fyers, original_leg):
 
     trigger_price = get_nifty_spot_price(fyers)
     print(f"Monitoring {original_leg}.1 for 8-point drop from {trigger_price}...")
-    while True:
+     True:
         current_price = get_nifty_spot_price(fyers)
         if current_price <= trigger_price - CONFIG["RECOVERY_TRADE_WAIT_POINTS"]:
             print(f"8-point drop condition met for {original_leg}.1 at price {current_price}.")
@@ -69,7 +69,7 @@ def handle_recovery_leg(fyers, original_leg):
             print(f"Recovery leg {original_leg}.1 skipped due to time cutoff.")
             log_trade(f"{original_leg}.1_SKIPPED", new_symbol, "8-point drop condition not met in time")
             # Prevent script exit — stay alive if monitoring existing positions
-        while True:
+         True:
             time.sleep(60)
         time.sleep(2)
         time.sleep(2)
@@ -90,7 +90,7 @@ def handle_recovery_leg(fyers, original_leg):
 
 def monitor_positions(fyers):
     global PNL_LOCK
-    while True:
+     True:
         for leg, data in list(POSITIONS.items()):
             try:
                 response = fyers.quotes({"symbols": data['symbol']})
@@ -130,7 +130,7 @@ def monitor_positions(fyers):
 
 # Main Strategy Execution
 def heartbeat():
-    while True:
+     True:
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] 🫀 Bot alive and monitoring...")
         time.sleep(3600)  # log every hour
 
@@ -148,7 +148,7 @@ def execute_strategy():
     # Calculate entry day: first valid trading day after last expiry
     expiry_day = get_next_expiry_date()
     entry_day = expiry_day - datetime.timedelta(days=7)
-    while not is_market_open(entry_day) or entry_day.strftime("%Y-%m-%d") in holidays:
+     not is_market_open(entry_day) or entry_day.strftime("%Y-%m-%d") in holidays:
         entry_day += datetime.timedelta(days=1)
 
     if today != entry_day:
@@ -165,8 +165,11 @@ def execute_strategy():
             print(f"Could not fetch account PnL: {e}")
         print("Monitoring existing trades (manual or prior) for SL/Target/MTM/Exit.")
         threading.Thread(target=monitor_positions, args=(fyers,), daemon=True).start()
+        # Check if today is the expiry day (Thursday)
+    if datetime.datetime.now().date() == get_next_expiry_date():
         while datetime.datetime.now().time() < datetime.datetime.strptime(CONFIG["SQUARE_OFF_TIME"], "%H:%M:%S").time():
-            time.sleep(1)
+        time.sleep(1)
+
         if datetime.date.today() == get_next_expiry_date():
             square_off_all_positions(fyers)
             log_trade("SquareOff", "All", "Positions squared off at expiry")
