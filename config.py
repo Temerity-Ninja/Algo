@@ -38,6 +38,9 @@ CONFIG = {
     # Backup Directory
     "BACKUP_DIR": "backups",
 
+    "TRADE_LOG_FILE": "/mnt/data/trade_log.txt",  # Adjusted for Colab
+
+
     # Other settings
     "ENABLE_MANUAL_OVERRIDE": True,
 
