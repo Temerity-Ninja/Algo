@@ -2,7 +2,7 @@
 
 CONFIG = {
     # Strategy Timings
-    "ENTRY_TIME": "09:16:00",
+    "ENTRY_TIME": "10:40:00",
     "SQUARE_OFF_TIME": "15:00:00",
 
     # MTM Profit Lock Settings
@@ -77,7 +77,7 @@ CONFIG = {
     "RECOVERY_TRADE_WAIT_POINTS": 8,
 
     # Strategy Start and Expiry
-    "STRATEGY_START_DAY": "FRIDAY",  # Day after previous Thursday expiry
+    "STRATEGY_START_DAY": "TUESDAY",  # Day after previous Thursday expiry
     "STRATEGY_EXPIRY_DAY": "THURSDAY"  # Expiry day (weekly)
 }
 
