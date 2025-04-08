@@ -115,7 +115,6 @@ def monitor_positions(fyers):
                     print(f"Target hit for {leg}: LTP {ltp} <= Target {target_trigger}")
                     log_trade(f"{leg}_TARGET", data['symbol'], f"Exited at {ltp}")
                     pnl = (data['entry_price'] - ltp) * CONFIG['QTY']
-                    global BOOKED_PNL
                     BOOKED_PNL += pnl
                     POSITIONS.pop(leg)
             except Exception as e:
