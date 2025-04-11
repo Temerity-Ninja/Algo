@@ -111,7 +111,7 @@ def handle_recovery_leg(fyers, original_leg, original_symbol):
 
             time.sleep(10)
         
-    order = place_order(fyers, new_symbol, "SELL", CONFIG["QTY"])
+    order = place_order(fyers, new_symbol, "SELL", CONFIG["QTY"]*2)
     log_trade(f"{original_leg}.1", new_symbol, {
                 "tag": "L3" if original_leg == "L1" else "L4",
                 "response": order
