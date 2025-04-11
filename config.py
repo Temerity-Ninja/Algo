@@ -73,7 +73,7 @@ CONFIG = {
 
     # Strategy Start and Expiry
     "STRATEGY_START_DAY": "FRIDAY",  # Day after previous Thursday expiry
-    "STRATEGY_EXPIRY_DAY": "THURSDAY"  # Expiry day (weekly)
+    "STRATEGY_EXPIRY_DAY": "FRIDAY"  # Expiry day (weekly)
 
 
 }
